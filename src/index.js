@@ -21,5 +21,12 @@ tempChannels.registerChannel('896165943842058290', {
 	childFormat: (member) => member.user.username
 })
 
+tempChannels.registerChannel('898338864274477056', {
+	childCategory: '895918275005935639',
+	childAutoDeleteIfEmpty: true,
+	childMaxUsers: null,
+	childFormat: (member) => member.user.username
+})
+
 
 void client.start()
