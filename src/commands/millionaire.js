@@ -53,7 +53,7 @@ class Millionaire {
 				const id = between(0, 3)
 				if (this.deletedQuestions.includes(id)) continue
 				if (this.question.correct === this.question.content[id]) continue
-				this.deletedQuestions.push(id)
+				this.deletedQuestions.push(this.question.content[id])
 			}
 			break
 		}
@@ -98,9 +98,9 @@ class Millionaire {
 	toComponent() {
 		const rows = [new MessageActionRow(), new MessageActionRow()]
 		
-		const questions = this.question.content.map((question, index) => {
+		const questions = this.question.content.map((question) => {
 			const style = this.lose && question === this.question.correct ? 'SUCCESS' : 'PRIMARY'
-			const deletedQuestion = this.deletedQuestions.includes(index)
+			const deletedQuestion = this.deletedQuestions.includes(question)
 			return new MessageButton()
 				.setCustomId(question)
 				.setLabel(question)
