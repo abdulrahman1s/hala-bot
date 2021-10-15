@@ -5,7 +5,7 @@ function readdir(...path) {
 	return fs.readdirSync(join(...path)).map((filePath) => require(join(...path, filePath)))
 }
 
-function shuffle (array) {
+function shuffle(array) {
 	let currentIndex = array.length
 	let temporaryValue
 	let randomIndex
@@ -23,6 +23,13 @@ function shuffle (array) {
 	return newArray
 }
 
+
+function between(min, max) {
+	return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
 module.exports = {
-	readdir,shuffle
+	readdir,
+	shuffle,
+	between
 }
