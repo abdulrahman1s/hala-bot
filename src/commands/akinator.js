@@ -123,7 +123,7 @@ class Akinator {
 	}
 
 	async end() {
-		this.api.win()
+		await this.api.win()
 	}
 
 	async ask(channel, filter) {
