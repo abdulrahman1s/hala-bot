@@ -30,3 +30,9 @@ tempChannels.registerChannel('898338864274477056', {
 
 
 void client.start()
+
+
+process
+	.on('uncaughtException', (err) => console.error(`Uncaught Exception: ${err.stack}`))
+	.on('unhandledRejection', (error) => console.error('Unhandled Rejection', error))
+	.on('warning', (warn) => console.warn(warn))
