@@ -14,23 +14,24 @@ module.exports = class extends Command {
 
 	async execute(ctx) {
 		const game = new Millionaire()
-		const filter = i => i.user.id === ctx.user.id
+		const filter = intercation => intercation.user.id === ctx.user.id
 
-		const msg = await ctx.reply({
+		await ctx.reply({
 			content: game.toString(),
-			components: game.toComponent(),
-			fetchReply: true
+			components: game.toComponent()
 		})
 
+		const channel = await ctx.client.channels.fetch(ctx.channelId)
+
 		while (!game.ended) {
-			await game.ask(msg, filter)
-			await msg.edit({ content: game.toString(), components: game.toComponent() })
+			await game.ask(channel, filter)
+			await ctx.editReply({ content: game.toString(), components: game.toComponent() })
 		}
 
 		if (game.lose) {
-			await msg.edit({ components: game.toComponent() })
+			await ctx.editReply({ components: game.toComponent() })
 		} else {
-			await msg.edit({ components: [], content: 'You win the **$1,000,000!!** 💸\nhttps://tenor.com/view/duffy-duck-money-a-lot-of-money-millionaire-gif-16438831' })
+			await ctx.editReply({ components: [], content: 'You win the **$1,000,000!!** 💸\nhttps://tenor.com/view/duffy-duck-money-a-lot-of-money-millionaire-gif-16438831' })
 		}
 	}
 }
@@ -49,12 +50,14 @@ class Millionaire {
 		case 'ask_someone': break
 		
 		case 'delete_two_answers': {
+			
 			while (this.deletedQuestions.length !== 2) {
 				const id = between(0, 3)
 				if (this.deletedQuestions.includes(id)) continue
 				if (this.question.correct === this.question.content[id]) continue
 				this.deletedQuestions.push(this.question.content[id])
 			}
+			
 			break
 		}
 		
@@ -62,8 +65,8 @@ class Millionaire {
 		}
 	}
 
-	ask(message, filter) {
-		const collector = message.channel.createMessageComponentCollector({ filter, time: 30000 })
+	ask(channel, filter) {
+		const collector = channel.createMessageComponentCollector({ filter, time: 30000 })
 
 		return new Promise((resolve) => {
 			collector.on('collect', async ctx => {
@@ -114,7 +117,7 @@ class Millionaire {
 				.setCustomId('delete_two_answers')
 				.setStyle('SECONDARY')
 				.setLabel('حذف إجابتين')
-				.setDisabled(!!this.deletedQuestions.length),
+				.setDisabled(!!this.deletedQuestions.length || this.ended),
 			new MessageButton()
 				.setCustomId('ask_someone')
 				.setStyle('SECONDARY')
@@ -134,9 +137,15 @@ class Millionaire {
 	}
 
 	toString() {
+		const format = new Intl.NumberFormat('en-US').format
 		const { question } = this.question
+
+		if (this.ended) {
+			return `**$${MONEY[this.score]}**\n\n${question}`
+		}
+
 		return MONEY.map((number, index) => {
-			const money = new Intl.NumberFormat('en-IN').format(number)
+			const money = format(number)
 			return `${index + 1} | ${index === this.score ? `**$${money}**` : `$${money}`}`
 		}).reverse().join('\n') + '\n\n' + question
 	}
