@@ -10,6 +10,7 @@
   "author": "TheMaestro",
   "license": "ISC",
   "dependencies": {
+    "aki-api": "^6.0.8",
     "discord-giveaways": "^5.0.1",
     "discord-temp-channels": "^3.0.1",
     "discord.js": "^13.2.0",
