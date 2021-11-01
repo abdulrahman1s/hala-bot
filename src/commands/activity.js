@@ -1,15 +1,16 @@
 const Command = require('../structures/Command')
 
 const ACTIVITIES = {
-	'755827207812677713': 'Poker Night',
-	'773336526917861400': 'Betrayal.io',
-	'755600276941176913': 'YouTube Together',
-	'814288819477020702': 'Fishington.io',
-	'832012774040141894': 'Chess in the Park',
-	'880218394199220334': 'Watch Together',
-	'878067389634314250': 'Doodle Crew',
-	'879863686565621790': 'Letter Tile',
-	'879863976006127627': 'Word Snacks'
+	755827207812677713: 'Poker Night',
+	773336526917861400: 'Betrayal.io',
+	755600276941176913: 'YouTube Together',
+	814288819477020702: 'Fishington.io',
+	832012774040141894: 'Chess in the Park',
+	880218394199220334: 'Watch Together',
+	878067389634314250: 'Doodle Crew',
+	879863686565621790: 'Letter Tile',
+	879863976006127627: 'Word Snacks',
+  	852509694341283871: 'SpellCast',
 }
 
 module.exports = class extends Command {
@@ -27,7 +28,7 @@ module.exports = class extends Command {
 				name: 'activity',
 				description: 'Which activity to start?',
 				type: 'STRING',
-				choices: Object.entries(ACTIVITIES).map(([value, name]) => ({name, value})),
+				choices: Object.entries(ACTIVITIES).map(([value, name]) => ({ name, value })),
 				required: true
 			}]
 		})
